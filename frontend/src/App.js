@@ -5,6 +5,7 @@ import Header from './components/header/Header'
 import Login from './views/login/Login'
 import LandingPage from './views/landingPage/LandingPage'
 import Register from './views/register/Register'
+import Student from './views/students/Student'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route exact path='/' element={<LandingPage /> } />
           <Route path='/login' element={<Login />}/>
           <Route path='/register' element={<Register />} />
+          <Route path='/student' element={<Student/>} />
         </Routes>
       
       </main>

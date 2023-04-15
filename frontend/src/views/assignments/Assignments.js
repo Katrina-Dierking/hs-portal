@@ -1,34 +1,34 @@
-import React from 'react'
-// import axios from "axios";
+import React, {useState, useEffect } from 'react'
+import axios from "axios";
 import {Link} from 'react-router-dom'
 import {Accordion, Badge, Button, Card} from 'react-bootstrap'
 
 
 const Assignments = () => {
 
-        // const [assignments, setAssignments] = useState([]);
-        // const deleteHandler = (id) => {
-        //   if (
-        //     window.confirm(
-        //       "Are you sure you want to delete this assignment? This is permanent and cannot be reversed"
-        //     )
-        //   ) {
-        //   }
-        // };
+        const [assignments, setAssignments] = useState([]);
+        const deleteHandler = (id) => {
+          if (
+            window.confirm(
+              "Are you sure you want to delete this assignment? This is permanent and cannot be reversed"
+            )
+          ) {
+          }
+        };
 
-        // const fetchAssignments = async () => {
-        //   const { data } = await axios.get(
-        //     "http://localhost:4000/api/assignments"
-        //   );
+        const fetchAssignments = async () => {
+          const { data } = await axios.get(
+            "http://localhost:5000/api/assignments"
+          );
 
-        //   setAssignments(data);
-        // };
+          setAssignments(data);
+        };
 
-        // console.log("assignments:", assignments);
+        console.log("assignments:", assignments);
 
-        // useEffect(() => {
-        //   fetchAssignments();
-        // }, []);
+        useEffect(() => {
+          fetchAssignments();
+        }, []);
   return (
     <>
       <Link to="createAssignment">
@@ -37,58 +37,59 @@ const Assignments = () => {
         </Button>
       </Link>
 
-       <Accordion>
-        <Accordion.Item eventKey='0'>
+      {assignments.map((assignment) => (
+        <Accordion defaultActiveKey={["0"]} key={assignment._id}>
+          <Accordion.Item eventKey="0">
+            <Card style={{ margin: 10 }}>
+              <Card.Header style={{ display: "flex" }}>
+                <span
+                  style={{
+                    color: "black",
+                    textDecoration: "none",
+                    flex: 1,
+                    cursor: "pointer",
+                    alignSelf: "center",
+                    fontSize: 18,
+                  }}
+                >
+                  <Accordion.Button as={Card.Text} variant="link">
+                    {assignment.title}
+                  </Accordion.Button>
+                </span>
 
-            <Card style={{margin:10}}>
-                <Card.Header style ={{display:"flex"}}>
-                    <span
-                        style={{
-                        color: "black",
-                        textDecoration: "none",
-                        flex: 1,
-                        cursor: "pointer",
-                        alignSelf: "center",
-                        fontSize: 18,
-                        }}
-                    >
-                    
-                        <Accordion.Button as={Card.Text} variant="link">{title}</Accordion.Button>
-                    </span>
+                <div>
+                  <Button href={`/assignment/${assignment._id}`}>Edit</Button>
+                  <Button
+                    variant="danger"
+                    className="mx-2"
+                    onClick={() => deleteHandler(assignment._id)}
+                  >Delete
+                  </Button>
+                </div>
+              </Card.Header>
 
-                    <div>
-                        <Button>Edit</Button>
-                        <Button>Delete</Button>
-                    </div>
-                </Card.Header>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  <h4>
+                    <Badge bg="success">Category:{assignment.category}</Badge>
+                  </h4>
 
-                <Accordion.Collapse eventKey='0'>
-                    <Card.Body>
-                    <h4>
-                        <Badge bg="success">Category:</Badge>
-                    </h4>
-
-                    <blockquote className='blockquote mb-0'>
-                        <p>Content</p>
-                        <footer className='blockquote-footer'>
-                            Created on - date
-                        </footer>
-                    </blockquote>
-                    </Card.Body>
-                </Accordion.Collapse>
-                
+                  <blockquote className="blockquote mb-0">
+                    <p>{assignment.content}</p>
+                    <footer className="blockquote-footer">
+                      Created on - date
+                    </footer>
+                  </blockquote>
+                </Card.Body>
+              </Accordion.Collapse>
             </Card>
-        </Accordion.Item>
-      </Accordion>
+          </Accordion.Item>
+        </Accordion>
+      ))}
     </>
   );
 }
 
 export default Assignments
 
-
-
-
-//         // {assignments.map((assignment) => (  
-//         // <Accordion defaultActiveKey={["0"]} key={assignment._id} >
 
